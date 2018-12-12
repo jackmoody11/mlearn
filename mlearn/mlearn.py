@@ -40,10 +40,10 @@ y = np.array(df['label'])
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2)
 clf = LinearRegression(n_jobs=-1)
 clf.fit(X_train, y_train)
-with open('linearregression.pickle', 'wb') as f:
+with open('data/linearregression.pickle', 'wb') as f:
     pickle.dump(clf, f)
 
-pickle_in = open('linearregression.pickle', 'rb')
+pickle_in = open('data/linearregression.pickle', 'rb')
 clf = pickle.load(pickle_in)
 accuracy = clf.score(X_test, y_test)
 
