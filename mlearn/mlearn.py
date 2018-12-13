@@ -1,39 +1,44 @@
-import pandas as pd
-import quandl
+import datetime
 import math
+import os
+import pickle
+import quandl
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from matplotlib import style
 from sklearn import preprocessing, model_selection, svm
 from sklearn.linear_model import LinearRegression
-import datetime
-import matplotlib.pyplot as plt
-from matplotlib import style
-import pickle
-import os
 
+
+# Choose styling for plotting
 style.use('ggplot')
 
 quandl.ApiConfig.api_key = os.environ['quandl_api_key']
 df = quandl.get('WIKI/GOOGL')
 df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume', ]]
+
+# Set high - low percentage and daily percent change
 df['HL_PCT'] = (df['Adj. High'] - df['Adj. Low']) * 100 / df['Adj. Close']
 df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) * 100 / df['Adj. Open']
 
 df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
 forecast_col = 'Adj. Close'
-
+# Fill missing data with outliers (to be ignored)
 df.fillna(-99999, inplace=True)
-
+# Set number of days to forecast out
 forecast_out = int(math.ceil(0.01 * len(df)))
 
 df['label'] = df[forecast_col].shift(-forecast_out)
-
+# Set X to array of DataFrame without label column
 X = np.array(df.drop(['label'], 1))
+# Center to mean and scale to unit variance
 X = preprocessing.scale(X)
 X = X[:-forecast_out]
 X_lately = X[-forecast_out:]
 
-
+# Drop rows with missing data
 df.dropna(inplace=True)
 y = np.array(df['label'])
 
