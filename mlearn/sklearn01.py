@@ -28,15 +28,15 @@ forecast_col = 'Adj. Close'
 # Fill missing data with outliers (to be ignored)
 df.fillna(-99999, inplace=True)
 # Set number of days to forecast out
-forecast_out = int(math.ceil(0.01 * len(df)))
+forecast_out = int(math.ceil(0.1 * len(df)))
 
 df['label'] = df[forecast_col].shift(-forecast_out)
 # Set X to array of DataFrame without label column
 X = np.array(df.drop(['label'], 1))
 # Center to mean and scale to unit variance
 X = preprocessing.scale(X)
-X = X[:-forecast_out]
 X_lately = X[-forecast_out:]
+X = X[:-forecast_out]
 
 # Drop rows with missing data
 df.dropna(inplace=True)
