@@ -21,7 +21,7 @@ df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume', ]]
 # Set high - low percentage and daily percent change
 df['HL_PCT'] = (df['Adj. High'] - df['Adj. Low']) * 100 / df['Adj. Close']
 df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) * 100 / df['Adj. Open']
-
+# Adjust DataFrame columns
 df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
 forecast_col = 'Adj. Close'
@@ -42,16 +42,24 @@ X_lately = X[-forecast_out:]
 df.dropna(inplace=True)
 y = np.array(df['label'])
 
+# Set training data and testing data
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2)
+
+# Set classifier
 clf = LinearRegression(n_jobs=-1)
+# Fit training data with classifier
 clf.fit(X_train, y_train)
+# Save fit equation to pickle file
 with open('data/linearregression.pickle', 'wb') as f:
     pickle.dump(clf, f)
 
+# Use pickle file with fit
 pickle_in = open('data/linearregression.pickle', 'rb')
 clf = pickle.load(pickle_in)
+# See how well model predicts
 accuracy = clf.score(X_test, y_test)
 
+# Extrapolate to future prices
 forecast_set = clf.predict(X_lately)
 df['Forecast'] = np.nan
 
@@ -65,7 +73,7 @@ for i in forecast_set:
     next_unix += one_day
     df.loc[next_date] = [np.nan for _ in range(len(df.columns) - 1)] + [i]
 
-
+# Plot forecast
 df['Adj. Close'].plot()
 df['Forecast'].plot()
 plt.legend(loc=4)
