@@ -38,10 +38,10 @@ test_data = full_data[-int(test_size * len(full_data)):]
 correct = 0
 total = 0
 
-for group in test_set:
-    for data in test_set[group]:
-        vote = k_nearest_neighbors(train_set, data, k=5)
-        if group == vote:
+for g in test_set:
+    for d in test_set[g]:
+        vote = k_nearest_neighbors(train_set, d, k=5)
+        if g == vote:
             correct += 1
         total += 1
 
