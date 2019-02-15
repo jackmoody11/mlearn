@@ -8,4 +8,4 @@
 .pytest_cache
 __pycache__/
 # Jupyter notebook files
-*/.ipynb_checkpoints
+.ipynb_checkpoints/
