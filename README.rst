@@ -6,6 +6,9 @@ After that, I will continue through various other tutorials
 
 Tutorials
 ---------
+
+Sentdex
+-------
 1. Linear Regression
 2. K Nearest Neighbors
 3. Support Vector Machines
@@ -13,3 +16,7 @@ Tutorials
 
 To be continued...
 
+Hands-on Machine Learning
+-------------------------
+1. Chapter 1 example
+2. Chapter 2 project
