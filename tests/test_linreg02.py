@@ -1,4 +1,4 @@
-from mlearn import linreg02 as lr2
+from mlearn.sentdex import linreg02 as lr2
 import numpy as np
 import random
 import pytest
